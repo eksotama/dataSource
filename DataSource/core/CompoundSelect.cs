@@ -38,5 +38,13 @@ namespace dataSource
         {
             throw new NotImplementedException();
         }
+
+        public override List<FieldInfo> fieldsInfo
+        {
+            get 
+            {
+                return select1.fieldsInfo;
+            }
+        }
     }
 }

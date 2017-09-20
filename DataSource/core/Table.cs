@@ -20,9 +20,9 @@ namespace dataSource
             }
         }
 
-        public int newId()
+        public int newId(DbContext dbc)
         {
-            object tmp= db.select().fields(expr.Max(this.id)).from(this)
+            object tmp= dbc.select().fields(expr.Max(this.id)).from(this)
                 .executeScalar();
             return tmp == null ? 1 : (Convert.ToInt32(tmp) + 1);
         }
@@ -45,21 +45,21 @@ namespace dataSource
             return Name;
         }
 
-        /// <summary>
-        /// adds a new fk to the table and adds the field to fields list
-        /// </summary>
-        public IntColumn addFKto(Table table)
-        {
-            IntColumn tmp= db.intColumn( string.Format("{0}_id", table.Name));
+        ///// <summary>
+        ///// adds a new fk to the table and adds the field to fields list
+        ///// </summary>
+        //public IntColumn addFKto(Table table)
+        //{
+        //    IntColumn tmp= db.intColumn( string.Format("{0}_id", table.Name));
 
-            this.fields.Add(tmp);
+        //    this.fields.Add(tmp);
 
-            this.FKs.Add(
-                new ForeinKey( tmp, table)
-                );
+        //    this.FKs.Add(
+        //        new ForeinKey( tmp, table)
+        //        );
 
-            return tmp;
-        }
+        //    return tmp;
+        //}
 
         /// <summary>
         /// adds a new fk to the table and adds the field to fields list, specifying it's name in the db
@@ -98,6 +98,19 @@ namespace dataSource
             return sb.ToString();
         }
 
+        public override List<FieldInfo> fieldsInfo
+        {
+            get
+            {
+                var tmp = new List<FieldInfo>();
+
+                foreach (var item in fields)
+                {
+                    tmp.Add(new FieldInfo(item.fieldType, item.Name));
+                }
+                return tmp;
+            }
+        }
 
     }
 

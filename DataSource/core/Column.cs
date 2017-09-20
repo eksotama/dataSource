@@ -158,7 +158,7 @@ namespace dataSource
     public abstract class IntColumn : Column
     {
         public bool autoInc = false;
-        public IntColumn(string name) : base(name) { }
+        public IntColumn(string name) : base(name) { fieldType = dbType.Int; }
 
         public Assignment value(int v)
         {
@@ -187,7 +187,7 @@ namespace dataSource
 
     public abstract class DoubleColumn : Column
     {
-        public DoubleColumn(string name) : base(name) { }
+        public DoubleColumn(string name) : base(name) { fieldType = dbType.Double; }
 
         public Assignment value(double v)
         {
@@ -197,7 +197,7 @@ namespace dataSource
 
     public abstract class TextColumn : Column
     {
-        public TextColumn(string name) : base(name) { }
+        public TextColumn(string name) : base(name) { fieldType = dbType.Text; }
 
         public Assignment value(string v)
         {
@@ -213,6 +213,7 @@ namespace dataSource
         public StringColumn(string name, int max)
             : base(name)
         {
+            fieldType = dbType.String;
             this.maxLength = max;
         }
 
@@ -225,7 +226,7 @@ namespace dataSource
 
     public abstract class BoolColumn : Column
     {
-        public BoolColumn(string name) : base(name) { }
+        public BoolColumn(string name) : base(name) { fieldType = dbType.Bool; }
 
         public Assignment value(bool v)
         {
@@ -235,7 +236,7 @@ namespace dataSource
 
     public abstract class DateColumn : Column
     {
-        public DateColumn(string name) : base(name) { }
+        public DateColumn(string name) : base(name) { fieldType = dbType.Date; }
 
         public Assignment value(DateTime v)
         {
@@ -245,7 +246,7 @@ namespace dataSource
 
     public abstract class DateTimeColumn : Column
     {
-        public DateTimeColumn(string name) : base(name) { }
+        public DateTimeColumn(string name) : base(name) { fieldType = dbType.DateTime; }
 
         public Assignment value(DateTime v)
         {
@@ -266,7 +267,7 @@ namespace dataSource
 
     public abstract class BinaryColumn : Column
     {
-        public BinaryColumn(string name) : base(name) { }
+        public BinaryColumn(string name) : base(name) { fieldType = dbType.Binary; }
 
         public Assignment value(byte[] v)
         {

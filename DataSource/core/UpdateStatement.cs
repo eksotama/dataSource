@@ -11,9 +11,9 @@ namespace dataSource
         Assignment[] assigns;
         expr cond;
 
-        public UpdateStatement(Database db, Table tbl )
+        public UpdateStatement(DbContext db, Table tbl )
         {
-            this.db = db;
+            this.dbc = db;
             this.tbl = tbl;
         }
 
@@ -50,7 +50,7 @@ namespace dataSource
 
         public override int execute()
         {
-            return db.executeUpdate(this);
+            return dbc.executeUpdate(this);
         }
 
 

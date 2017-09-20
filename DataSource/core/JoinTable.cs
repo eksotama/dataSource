@@ -27,5 +27,16 @@ namespace dataSource
             this.on = on;
         }
 
+
+        public override List<FieldInfo> fieldsInfo
+        {
+            get 
+            {
+                var tmp = new List<FieldInfo>();
+                tmp.AddRange(Tbl1.fieldsInfo);
+                tmp.AddRange(tbl2.fieldsInfo);
+                return tmp;
+            }
+        }
     }
 }

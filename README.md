@@ -85,28 +85,30 @@ but of course it's still more cumbersome than any code-first data access layer t
 manipulate data from outside of this class
 
 ```cs
+            //dbcontext instance
+            var dbc = dbm.db.newContext();
 
-          //inserting -----------------
+            //inserting -----------------
 
-            dbm.db.insertInto(dbm.tbl_customer).Values(
+            dbc.insertInto(dbm.tbl_customer).Values(
                 dbm.cust_name.value("khaled")
                 ).execute();
 
-            int inserted_customer_id = dbm.db.lastId();
+            int inserted_customer_id = dbc.lastId();
 
-            dbm.db.insertInto(dbm.tbl_contact).Values(
+            dbc.insertInto(dbm.tbl_contact).Values(
                 dbm.cont_fk_cust.value(inserted_customer_id),
                 dbm.cont_type.value(1),
                 dbm.cont_value.value("201234567890")
                 ).execute();
 
             //call submitChanges() to commit transaction
-            dbm.db.SubmitChanges();
+            dbc.SubmitChanges();
 
             //selecting -----------------
 
             DataTable dt=
-            dbm.db.select().from(dbm.vw_contact).fields(
+            dbc.select().from(dbm.vw_contact).fields(
                 dbm.cont_type, 
                 dbm.cont_fk_cust, 
                 dbm.cont_value
@@ -115,18 +117,18 @@ manipulate data from outside of this class
 
             //updating -----------------
 
-            dbm.db.update(dbm.tbl_customer).Set(
+            dbc.update(dbm.tbl_customer).Set(
                 dbm.cust_name.value("khaled kamal")
                 )
                 .where(dbm.tbl_customer.id.equal(inserted_customer_id))
                 .execute();
 
-            dbm.db.SubmitChanges();
+            dbc.SubmitChanges();
 
             //deleting ----------------
 
-            dbm.db.deleteFrom(dbm.tbl_customer).where(dbm.tbl_customer.id.equal(inserted_customer_id));
+            dbc.deleteFrom(dbm.tbl_customer).where(dbm.tbl_customer.id.equal(inserted_customer_id));
 
-            dbm.db.SubmitChanges();
+            dbc.SubmitChanges();
             
 ```

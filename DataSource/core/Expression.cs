@@ -7,10 +7,10 @@ namespace dataSource
 {
     public abstract class expr
     {
+        public dbType fieldType = dbType.String;
 
         public expr As(string alias)
         {
-            
             return new AliasedExpr(this, alias);
         }
 
@@ -20,173 +20,173 @@ namespace dataSource
 
         public expr equal(expr exp)
         {
-            return new BinaryExpression(this, "=", exp);
+            return new BinaryExpression(this, "=", exp) { fieldType=dbType.Bool };
         }
 
         public expr equal(object o)
         {
-            return equal(new ValueExpr(o));
+            return equal(new ValueExpr(o) { fieldType = dbType.Bool });
         }
 
         public expr notEqual(expr exp)
         {
-            return new BinaryExpression(this, "<>", exp);
+            return new BinaryExpression(this, "<>", exp) { fieldType = dbType.Bool };
         }
 
 
         public expr notEqual(object o)
         {
-            return notEqual(new ValueExpr(o));
+            return notEqual(new ValueExpr(o) { fieldType = dbType.Bool });
         }
 
         public expr concat(expr exp)
         {
-            return new BinaryExpression(this, "||", exp);
+            return new BinaryExpression(this, "||", exp) { fieldType = dbType.String };
         }
 
 		public expr concat(object o)
 		{
-			return concat(new ValueExpr(o));
+            return concat(new ValueExpr(o) { fieldType = dbType.String });
 		}
 
         public expr minus(expr exp)
         {
-            return new BinaryExpression(this, "-", exp);
+            return new BinaryExpression(this, "-", exp) { fieldType = this.fieldType };
         }
 
         public expr minus(Object ob)
         {
-            return this.minus(new ValueExpr(ob));
+            return this.minus(new ValueExpr(ob) { fieldType = this.fieldType });
         }
 
         public expr plus(expr exp)
         {
-            return new BinaryExpression(this, "+", exp);
+            return new BinaryExpression(this, "+", exp) { fieldType = this.fieldType };
         }
 
         public expr plus(double value)
         {
-            return plus(new ValueExpr(value));
+            return plus(new ValueExpr(value) { fieldType = this.fieldType });
         }
 
         public expr mod(expr exp)
         {
-            return new BinaryExpression(this, "%", exp);
+            return new BinaryExpression(this, "%", exp) { fieldType = dbType.Int };
         }
 
         public expr mod(double value)
         {
-            return mod(new ValueExpr(value));
+            return mod(new ValueExpr(value) { fieldType = dbType.Int });
         }
 
         public expr multiply(expr exp)
         {
-            return new BinaryExpression(this, "*", exp);
+            return new BinaryExpression(this, "*", exp) { fieldType = dbType.Double };
         }
 
 		public expr multiply(double o)
 		{
-			return multiply(new ValueExpr(o));
+            return multiply(new ValueExpr(o) { fieldType = dbType.Double });
 		}
 
         public expr divide(expr exp)
         {
-            return new BinaryExpression(this, "/", exp);
+            return new BinaryExpression(this, "/", exp) { fieldType = dbType.Double };
         }
 
 		public expr divide(double o)
 		{
-			return divide(new ValueExpr(o));
+            return divide(new ValueExpr(o) { fieldType = dbType.Double });
 		}
 
         public expr And(expr exp)
         {
-            return new BinaryExpression(this, "AND", exp);
+            return new BinaryExpression(this, "AND", exp) { fieldType = dbType.Bool };
         }
 
         public expr OR(expr exp)
         {
-            return new BinaryExpression(this, "OR", exp);
+            return new BinaryExpression(this, "OR", exp) { fieldType = dbType.Bool };
         }
 
         public expr greaterThan(expr exp)
         {
-            return new BinaryExpression(this, ">", exp);
+            return new BinaryExpression(this, ">", exp) { fieldType = dbType.Bool };
         }
 
         public expr greaterOrEqual(expr exp)
         {
-            return new BinaryExpression(this, ">=", exp);
+            return new BinaryExpression(this, ">=", exp) { fieldType = dbType.Bool };
         }
 
         public expr lessThan(expr exp)
         {
-            return new BinaryExpression(this, "<", exp);
+            return new BinaryExpression(this, "<", exp) { fieldType = dbType.Bool };
         }
 
         public expr lessOrEqual(expr exp)
         {
-            return new BinaryExpression(this, "<=", exp);
+            return new BinaryExpression(this, "<=", exp) { fieldType = dbType.Bool };
         }
 
         public expr IN(params object[] values)
         {
-            return new InExpression(this, true, values);
+            return new InExpression(this, true, values) { fieldType = dbType.Bool };
         }
 
         public expr notIN(params object[] values)
         {
-            return new InExpression(this, false, values);
+            return new InExpression(this, false, values) { fieldType = dbType.Bool };
         }
 
         public expr IN(AbsSelect select)
         {
-            return new InExpression(this, true, select);
+            return new InExpression(this, true, select) { fieldType = dbType.Bool };
         }
 
         public expr notIN(AbsSelect select)
         {
-            return new InExpression(this, false, select);
+            return new InExpression(this, false, select) { fieldType = dbType.Bool };
         }
 
         public expr IN(DbTable table)
         {
-            return new InExpression(this, true, table);
+            return new InExpression(this, true, table) { fieldType = dbType.Bool };
         }
 
         public expr notIN(DbTable table)
         {
-            return new InExpression(this, false, table);
+            return new InExpression(this, false, table) { fieldType = dbType.Bool };
         }
 
         public expr between(expr exp1, expr exp2)
         {
-            return new BetweenExpression(this, true, exp1, exp2 );
+            return new BetweenExpression(this, true, exp1, exp2) { fieldType = dbType.Bool };
         }
 
         public expr notBetween(expr exp1, expr exp2)
         {
-            return new BetweenExpression(this, false, exp1, exp2);
+            return new BetweenExpression(this, false, exp1, exp2) { fieldType = dbType.Bool };
         }
 
         public expr between(object val1, object val2)
         {
-            return new BetweenExpression(this, true, new ValueExpr(val1), new ValueExpr(val2));
+            return new BetweenExpression(this, true, new ValueExpr(val1), new ValueExpr(val2)) { fieldType = dbType.Bool };
         }
 
         public expr notBetween(object val1, object val2)
         {
-            return new BetweenExpression(this, false, new ValueExpr(val1), new ValueExpr(val2));
+            return new BetweenExpression(this, false, new ValueExpr(val1), new ValueExpr(val2)) { fieldType = dbType.Bool };
         }
 
         public expr isNull()
         {
-            return new NullCheckExp(this, true);
+            return new NullCheckExp(this, true) { fieldType = dbType.Bool };
         }
 
         public expr notNull()
         {
-            return new NullCheckExp(this, false);
+            return new NullCheckExp(this, false) { fieldType = dbType.Bool };
         }
 
 		/// <summary>
@@ -215,27 +215,27 @@ namespace dataSource
 
         public static expr Minus(expr exp)
         {
-            return new UnaryExpression("-", exp);
+            return new UnaryExpression("-", exp) { fieldType = dbType.Double };
         }
 
         public static expr not(expr exp)
         {
-            return new UnaryExpression("NOT", exp);
+            return new UnaryExpression("NOT", exp) { fieldType = dbType.Bool };
         }
 
         public static expr abs(expr exp)
         {
-            return new FunctionExpression("Abs", exp);
+            return new FunctionExpression("Abs", exp) { fieldType = exp.fieldType };
         }
 
         public static expr ceiling(expr exp)
         {
-            return new FunctionExpression("ceiling", exp);
+            return new FunctionExpression("ceiling", exp) { fieldType = dbType.Int };
         }
 
         public static expr floor(expr exp)
         {
-            return new FunctionExpression("floor", exp);
+            return new FunctionExpression("floor", exp) { fieldType = dbType.Int };
         }
 
         
@@ -245,7 +245,7 @@ namespace dataSource
         /// </summary>
         public static expr length(expr exp)
         {
-            return new FunctionExpression("length", exp);
+            return new FunctionExpression("length", exp) { fieldType = dbType.Int };
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace dataSource
         /// </summary>
         public static expr Max(params expr[] exp)
         {
-            return new FunctionExpression("max", exp);
+            return new FunctionExpression("max", exp) { fieldType = exp[0].fieldType };
         }
 
         /// <summary>
@@ -261,27 +261,27 @@ namespace dataSource
         /// </summary>
         public static expr Min(params expr[] exp)
         {
-            return new FunctionExpression("min", exp);
+            return new FunctionExpression("min", exp) { fieldType = exp[0].fieldType };
         }
 
         public static expr Avg(params expr[] exp)
         {
-            return new FunctionExpression("avg", exp);
+            return new FunctionExpression("avg", exp) { fieldType = exp[0].fieldType };
         }
 
         public static expr count(params expr[] exp)
         {
-            return new FunctionExpression("count", exp);
+            return new FunctionExpression("count", exp) { fieldType = dbType.Int };
         }
 
         public static expr median(params expr[] exp)
         {
-            return new FunctionExpression("median", exp);
+            return new FunctionExpression("median", exp) { fieldType = exp[0].fieldType };
         }
 
         public static expr sum(params expr[] exp)
         {
-            return new FunctionExpression("sum", exp);
+            return new FunctionExpression("sum", exp) { fieldType = exp[0].fieldType };
         }
 
 
@@ -375,7 +375,7 @@ namespace dataSource
     {
         private expr exp1;
         private expr exp2;
-        private bool between;
+        private bool _between;
         private expr exp;
 
         public BetweenExpression(expr exp, bool betweenOrNot, expr exp1, expr exp2)
@@ -383,30 +383,30 @@ namespace dataSource
             this.exp = exp;
             this.exp1 = exp1;
             this.exp2 = exp2;
-            this.between = betweenOrNot;
+            this._between = betweenOrNot;
         }
 
 
         public override string Render(Statement st)
         {
-            return string.Format("(({0}) {1} ({2}) AND ({3})) ", exp.Render(st), between? "BETWEEN": "NOT BETWEEN" , exp1.Render(st), exp2.Render(st));
+            return string.Format("(({0}) {1} ({2}) AND ({3})) ", exp.Render(st), _between? "BETWEEN": "NOT BETWEEN" , exp1.Render(st), exp2.Render(st));
         }
     }
 
     public class NullCheckExp : expr
     {
-        private bool isNull;
+        private bool _isNull;
         private expr exp;
 
         public NullCheckExp(expr exp, bool isNull)
         {
             this.exp = exp;
-            this.isNull = isNull;
+            this._isNull = isNull;
         }
 
         public override string Render(Statement st)
         {
-            return string.Format("({0}) {1}" ,exp.Render(st), isNull? "ISNULL" : "NOTNULL");
+            return string.Format("({0}) {1}" ,exp.Render(st), _isNull? "ISNULL" : "NOTNULL");
         }
     }
 
@@ -567,21 +567,52 @@ namespace dataSource
     /// </summary>
     public class AliasedExpr : expr
     {
-        string alias;
+        string _alias;
         expr exp;
+
+        public string alias
+        {
+            get
+            {
+                return _alias;
+            }
+        }
 
         public AliasedExpr(expr exp, string alias)
         {
             this.exp = exp;
-            this.alias = alias;
+            this._alias = alias;
+            this.fieldType = exp.fieldType;
         }
 
         public override string Render(Statement st)
         {
-            return string.Format("({0}) AS {1}", exp.Render(st), alias);
+            return string.Format("({0}) AS {1}", exp.Render(st), _alias);
         }
     }
 
     #endregion
+
+
+    public struct FieldInfo
+    {
+        public string name;
+        public dbType type;
+
+        public FieldInfo(dbType type, string name)
+        {
+            this.name = name;
+            this.type = type;
+        }
+
+        public FieldInfo(Column col)
+        {
+            this.name = col.Name;
+            this.type = col.fieldType;
+        }
+
+    }
+
+    public enum dbType { String, Int, Double, Text, Bool, Date, DateTime, Binary }
 
 }

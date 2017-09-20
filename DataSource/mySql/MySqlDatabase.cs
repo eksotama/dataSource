@@ -11,20 +11,22 @@ namespace dataSource.mysql
 {
     class MySqlDatabase : Database
     {
-        
-         //constructors
-        public MySqlDatabase(string connectionString)
+
+        public override DbContext newContext()
         {
-            this.connection = new MySqlConnection(
-                connectionString
-                );
+            var con = new MySqlConnection(this.conectionString);
+            return new MySqlDbContext(this, con);
+        }
+
+         //constructors
+        public MySqlDatabase(string conString)
+        {
+            this.conectionString = conString;
         }
 
         public MySqlDatabase(string server, string db, string user, string pwd)
         {
-            this.connection = new MySqlConnection(
-                string.Format("Host={0};UserName={1};Password={2};Database={3};", server, user, pwd, db)
-                );
+            this.conectionString = string.Format("Host={0};UserName={1};Password={2};Database={3};", server, user, pwd, db);
         }
 
         //===== implementations ==============
@@ -41,15 +43,8 @@ namespace dataSource.mysql
                 );
         }
 
-        protected override IDbCommand getCommand()
-        {
-            return new MySqlCommand() {Connection= (MySqlConnection)this.connection };
-        }
 
-        protected override void addParam(IDbCommand cmd, string name, object value)
-        {
-            ((MySqlCommand)cmd).Parameters.AddWithValue(name, value);
-        }
+        
 
 
 
@@ -104,17 +99,7 @@ namespace dataSource.mysql
 
         #endregion
 
-        //===================
-        private SelectStatement selectLastId;
-
-        public override int lastId()
-        {
-            if (selectLastId == null)
-	        {
-                selectLastId = this.select().fields(new FunctionExpression("LAST_INSERT_ID"));
-	        }
-            return Convert.ToInt32( selectLastId.executeScalar() );
-        }
+        
 
     }
 }

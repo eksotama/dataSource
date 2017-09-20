@@ -8,7 +8,7 @@ namespace dataSource
     public abstract class NonQueryStatement : Statement
     {
         //must be initialized
-        public Database db;
+        public DbContext dbc;
         public Table tbl;
 
         public abstract int execute();

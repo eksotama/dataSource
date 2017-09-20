@@ -45,7 +45,7 @@ namespace dataSource
 
         #endregion
 
-
+        public abstract List<FieldInfo> fieldsInfo { get; }
     }
 
 
@@ -66,8 +66,7 @@ namespace dataSource
         
         public abstract string createCommand();
 
-
-
+        
     }
 
 

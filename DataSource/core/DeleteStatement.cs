@@ -10,9 +10,9 @@ namespace dataSource
 
         public expr cond;
 
-        public DeleteStatement(Database db, Table tbl)
+        public DeleteStatement(DbContext db, Table tbl)
         {
-            this.db = db;
+            this.dbc = db;
             this.tbl = tbl;
         }
 
@@ -24,7 +24,7 @@ namespace dataSource
 
         public override int execute()
         {
-            return db.executeDelete(this);
+            return dbc.executeDelete(this);
         }
 
         public override string Render()

@@ -40,9 +40,19 @@ namespace dataSource
 			return Convert.ToInt32( dr[col.Name].ToString());
 		}
 
+        public static int getInt(this DataRow dr, string colName)
+        {
+            return Convert.ToInt32(dr[colName].ToString());
+        }
+
         public static double getDouble(this DataRow dr, DoubleColumn col)
         {
             return Convert.ToDouble(dr[col.Name].ToString());
+        }
+
+        public static double getDouble(this DataRow dr, string col)
+        {
+            return Convert.ToDouble(dr[col].ToString());
         }
 
         public static bool isNull(this DataRow dr, Column col)
@@ -50,16 +60,27 @@ namespace dataSource
             return dr[col.Name] is DBNull;
         }
 
+        public static bool isNull(this DataRow dr, string col)
+        {
+            return dr[col] is DBNull;
+        }
+
 		public static string getString(this DataRow dr, Column col)
 		{
 			return dr[col.Name].ToString();
 		}
+
+        public static string getString(this DataRow dr, string col)
+        {
+            return dr[col].ToString();
+        }
 
 		public static string getString(this DataRow dr, StringColumn col)
 		{
 			return dr[col.Name].ToString();
 		}
 
+      
 		public static string getString(this DataRow dr, TextColumn col)
 		{
 			return dr[col.Name].ToString();
@@ -70,6 +91,11 @@ namespace dataSource
 			return dr.Field<DateTime>(col.Name);
 		}
 
+        public static DateTime getDate(this DataRow dr, string col)
+        {
+            return dr.Field<DateTime>(col);
+        }
+
         public static DateTime getDate(this DataRow dr, DateTimeColumn col)
         {
             return dr.Field<DateTime>(col.Name);
@@ -78,6 +104,11 @@ namespace dataSource
         public static bool getBool(this DataRow dr, BoolColumn col)
         {
             return Convert.ToBoolean(dr[col.Name].ToString());
+        }
+
+        public static bool getBool(this DataRow dr, string col)
+        {
+            return Convert.ToBoolean(dr[col].ToString());
         }
 
     }

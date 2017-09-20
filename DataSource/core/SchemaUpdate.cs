@@ -24,11 +24,11 @@ namespace dataSource
         /// <summary>
         /// executes to the database without commiting
         /// </summary>
-        internal void apply(Database db)
+        internal void apply(Database db, DbContext dbc)
         {
             foreach(DbObject dbo in objects)
             {
-                db.create(dbo);
+                dbc.create(dbo);
             }
             //
             foreach (NonQueryStatement st in statements)

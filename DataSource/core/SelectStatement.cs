@@ -6,10 +6,10 @@ using System.Data;
 
 namespace dataSource
 {
-    public class SelectStatement : AbsSelect , Statement
+    public class SelectStatement : AbsSelect, Statement
     {
         //must be initialized
-        public Database db;
+        public DbContext db;
         public bool distinct;
         public expr[] selectFields;
         public DbTable[] tableFields;
@@ -18,15 +18,15 @@ namespace dataSource
         public expr[] groupBys;
         public expr havingExp;
         public SortExp[] sortList;
-        public int pageIndex=0, pageSize=0;
+        public int pageIndex = 0, pageSize = 0;
 
-        public SelectStatement(Database db ,bool distinct)
+        public SelectStatement(DbContext db, bool distinct)
         {
             this.db = db;
             this.distinct = distinct;
         }
 
-        public SelectStatement(Database db )
+        public SelectStatement(DbContext db)
         {
             this.db = db;
             this.distinct = false;
@@ -104,11 +104,11 @@ namespace dataSource
         public override string renderInSelect()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("SELECT {0}", distinct? "DISTINCT" : "");
+            sb.AppendFormat("SELECT {0}", distinct ? "DISTINCT" : "");
             //select all
             if (tableFields == null && selectFields == null) sb.Append(" * ");
             //table fields
-            if(tableFields != null)
+            if (tableFields != null)
             {
                 foreach (DbTable t in tableFields)
                 {
@@ -175,7 +175,7 @@ namespace dataSource
             return sb.ToString();
         }
 
-        
+
 
         #endregion
 
@@ -217,8 +217,47 @@ namespace dataSource
             return db.executeScalar(this);
         }
 
-       
 
+        public override List<FieldInfo> fieldsInfo
+        {
+            get
+            {
+                if (tableFields == null && selectFields == null)
+                {
+                    if (targetTable != null)
+                    {
+                        return targetTable.fieldsInfo;
+                    }
+                }
+
+                var tmp = new List<FieldInfo>();
+                //table fields
+                if (tableFields != null)
+                {
+                    foreach (DbTable t in tableFields)
+                    {
+                        tmp.AddRange(t.fieldsInfo);
+                    }
+                }
+                //fields
+                if (selectFields != null)
+                {
+                    foreach (expr exp in selectFields)
+                    {
+                        if (exp is Column)
+                        {
+                            tmp.Add(new FieldInfo(exp as Column));
+                        }
+                        else if (exp is AliasedExpr)
+                        {
+                            var a = exp as AliasedExpr;
+                            tmp.Add(new FieldInfo(a.fieldType, a.alias));
+                        }
+                    }
+                }
+                return tmp;
+            }
+        }
     }
 
     public enum SortOrder { ASC , DESC }

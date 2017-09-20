@@ -9,20 +9,25 @@ namespace dataSource.sqlite
 {
     public class SqliteDatabase : Database
     {
+        
+
+        public override DbContext newContext()
+        {
+            var con = new SQLiteConnection(this.conectionString);
+
+            return new SqliteDbContext(this, con);
+        }
 
         //constructors
         public SqliteDatabase(string path)
         {
-            this.connection = new SQLiteConnection(
-                string.Format("Data Source={0};Foreign Keys=True;", path)
-                );
+            this.conectionString = string.Format("Data Source={0};Foreign Keys=True;", path);
+            
         }
 
         public SqliteDatabase(string path, string pwd)
         {
-            this.connection = new SQLiteConnection(
-                string.Format("Data Source={0};Foreign Keys=True;Password={1}", path, pwd)
-                );
+            this.conectionString = string.Format("Data Source={0};Foreign Keys=True;Password={1}", path, pwd);   
         }
 
         //===== implementations ==============
@@ -36,17 +41,7 @@ namespace dataSource.sqlite
                 );
         }
 
-        protected override IDbCommand getCommand()
-        {
-            return new SQLiteCommand((SQLiteConnection)this.connection);
-        }
-
-        protected override void addParam(IDbCommand cmd, string name, object value)
-        {
-            ((SQLiteCommand)cmd).Parameters.AddWithValue(name, value);
-        }
-
-
+       
 
         public override IntColumn intColumn(string name)
         {
@@ -97,16 +92,8 @@ namespace dataSource.sqlite
             return new Table(name, this, fields);
         }
 
-        //===================
-        private SelectStatement selectLastId;
+       
 
-        public override int lastId()
-        {
-            if (selectLastId == null)
-	        {
-		        selectLastId = this.select().fields(new FunctionExpression("last_insert_rowid"));
-	        }
-            return Convert.ToInt32( selectLastId.executeScalar() );
-        }
+        
     }
 }

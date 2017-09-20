@@ -11,9 +11,9 @@ namespace dataSource
         public Assignment[] assigns;
         
 
-        public InsertStatement(Database db, Table tbl)
+        public InsertStatement(DbContext db, Table tbl)
         {
-            this.db = db;
+            this.dbc = db;
             this.tbl = tbl;
         }
 
@@ -27,7 +27,7 @@ namespace dataSource
 
         public override int execute()
         {
-            return db.executeInsert(this);
+            return dbc.executeInsert(this);
         }
 
         public override string Render()

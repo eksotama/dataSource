@@ -10,6 +10,22 @@ namespace dataSource
 
         AbsSelect select;
 
+        public AbsSelect selectStmnt
+        {
+            get
+            {
+                return selectStmnt;
+            }
+        }
+
+        public override List<FieldInfo> fieldsInfo
+        {
+            get
+            {
+                return select.fieldsInfo;
+            }
+        }
+
         public View(Database db, string name, AbsSelect select)
         {
             this.db = db;
